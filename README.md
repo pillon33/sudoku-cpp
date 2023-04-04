@@ -1,2 +1,2 @@
 # sudoku-cpp
-Sudoku game
+Sudoku game. This project is developed using qt framework.
