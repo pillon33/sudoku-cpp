@@ -1,6 +1,7 @@
 
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
+#include "numberbutton.h"
 
 
 MainWindow::MainWindow(QWidget *parent)
@@ -8,6 +9,7 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    this->createButtons();
 }
 
 MainWindow::~MainWindow()
@@ -15,27 +17,9 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-
-
-void MainWindow::on_startGameButton_clicked()
-{
+void MainWindow::createButtons(){
+    for (int i = 1; i < 10; ++i) {
+        NumberButton *b = new NumberButton(i);
+        ui->numberList->addWidget(b);
+    }
 }
-
-
-void MainWindow::on_button1_clicked()
-{
-
-}
-
-
-void MainWindow::on_button2_clicked()
-{
-
-}
-
-
-void MainWindow::on_button3_clicked()
-{
-
-}
-

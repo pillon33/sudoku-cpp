@@ -17,6 +17,8 @@ set(PROJECT_SOURCES
         mainwindow.cpp
         mainwindow.h
         mainwindow.ui
+        numberbutton.h
+        numberbutton.cpp
 )
 
 set(ASSETS

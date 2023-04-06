@@ -18,15 +18,7 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-
-private slots:
-    void on_startGameButton_clicked();
-
-    void on_button1_clicked();
-
-    void on_button2_clicked();
-
-    void on_button3_clicked();
+    void createButtons();
 
 private:
     Ui::MainWindow *ui;
