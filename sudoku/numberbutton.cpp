@@ -9,3 +9,7 @@ NumberButton::NumberButton(int n)
     this->setCheckable(true);
 }
 
+
+int NumberButton::getNumber(){
+    return this->number;
+}
