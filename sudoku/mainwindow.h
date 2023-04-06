@@ -3,7 +3,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-
+#include "gameboard.h"
 
 
 QT_BEGIN_NAMESPACE
@@ -22,6 +22,7 @@ public:
 
 private:
     Ui::MainWindow *ui;
+    GameBoard *gameBoard;
 };
 
 #endif // MAINWINDOW_H

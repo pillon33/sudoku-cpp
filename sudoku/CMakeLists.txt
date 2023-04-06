@@ -19,6 +19,10 @@ set(PROJECT_SOURCES
         mainwindow.ui
         numberbutton.h
         numberbutton.cpp
+        gameboard.h
+        gameboard.cpp
+        numberbuttonlist.h
+        numberbuttonlist.cpp
 )
 
 set(ASSETS
