@@ -9,6 +9,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     this->createButtons();
+    this->selectedNumber = 0;
 }
 
 MainWindow::~MainWindow()
@@ -29,8 +30,15 @@ void MainWindow::createButtons(){
 void MainWindow::selectNumber(){
     NumberButton* buttonSender = qobject_cast<NumberButton*>(sender()); //retrive information about sender
     int n = buttonSender->getNumber();
+    int prevN = this->selectedNumber;
 
     if(buttonSender->isChecked()){
+        //uncheck previous button
+        if(prevN){
+            NumberButton* prevButton = this->numberButtons.at(prevN-1);
+            prevButton->setChecked(false);
+        }
+        //change selectedNumber
         this->selectedNumber = n;
     }else{
         this->selectedNumber = 0;
