@@ -35,18 +35,60 @@
    <widget class="QWidget" name="gridLayoutWidget">
     <property name="geometry">
      <rect>
-      <x>190</x>
-      <y>40</y>
-      <width>471</width>
-      <height>371</height>
+      <x>180</x>
+      <y>20</y>
+      <width>481</width>
+      <height>391</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="board">
-     <item row="2" column="0">
-      <widget class="QLabel" name="selectedNumberLabel">
-       <property name="text">
-        <string>Selected number: </string>
+     <item row="0" column="0">
+      <widget class="QTableWidget" name="tableWidget">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>0</height>
+        </size>
        </property>
+       <property name="rowCount">
+        <number>9</number>
+       </property>
+       <property name="columnCount">
+        <number>9</number>
+       </property>
+       <attribute name="horizontalHeaderVisible">
+        <bool>false</bool>
+       </attribute>
+       <attribute name="horizontalHeaderDefaultSectionSize">
+        <number>53</number>
+       </attribute>
+       <attribute name="horizontalHeaderHighlightSections">
+        <bool>true</bool>
+       </attribute>
+       <attribute name="verticalHeaderVisible">
+        <bool>false</bool>
+       </attribute>
+       <attribute name="verticalHeaderDefaultSectionSize">
+        <number>43</number>
+       </attribute>
+       <row/>
+       <row/>
+       <row/>
+       <row/>
+       <row/>
+       <row/>
+       <row/>
+       <row/>
+       <row/>
+       <column/>
+       <column/>
+       <column/>
+       <column/>
+       <column/>
+       <column/>
+       <column/>
+       <column/>
+       <column/>
       </widget>
      </item>
     </layout>
@@ -54,13 +96,13 @@
    <widget class="QWidget" name="horizontalLayoutWidget">
     <property name="geometry">
      <rect>
-      <x>190</x>
-      <y>450</y>
-      <width>471</width>
+      <x>180</x>
+      <y>440</y>
+      <width>481</width>
       <height>81</height>
      </rect>
     </property>
-    <layout class="QHBoxLayout" name="numberList" stretch="">
+    <layout class="QHBoxLayout" name="numberList">
      <property name="spacing">
       <number>6</number>
      </property>

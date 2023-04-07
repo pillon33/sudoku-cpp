@@ -28,7 +28,8 @@ void MainWindow::createButtons(){
 }
 
 void MainWindow::selectNumber(){
-    NumberButton* buttonSender = qobject_cast<NumberButton*>(sender()); //retrive information about sender
+    //retrive information about sender
+    NumberButton* buttonSender = qobject_cast<NumberButton*>(sender());
     int n = buttonSender->getNumber();
     int prevN = this->selectedNumber;
 
@@ -43,7 +44,7 @@ void MainWindow::selectNumber(){
     }else{
         this->selectedNumber = 0;
     }
-    ui->selectedNumberLabel->setText(
-        QString("Selected number: %1").arg(this->selectedNumber)
-    );
+//    ui->selectedNumberLabel->setText(
+//        QString("Selected number: %1").arg(this->selectedNumber)
+//    );
 }
