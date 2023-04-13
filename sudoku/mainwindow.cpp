@@ -9,10 +9,10 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     this->createButtons();
+    this->initializeGrid();
     this->selectedNumber = 0;
     this->selectedRow = -1;
     this->selectedColumn = -1;
-//    connect(ui->grid, &QTableWidget::cellClicked, this, &MainWindow::unselect);
 }
 
 MainWindow::~MainWindow()
@@ -92,8 +92,29 @@ void MainWindow::insertAction(){
     }
 
     NumberButton *b = this->numberButtons.at(this->selectedNumber - 1);
-    ui->grid->item(this->selectedRow, this->selectedColumn)->
-        setText("essa");
-    b->decOccurances();
+    QTableWidgetItem *f =  ui->grid->item(this->selectedRow, this->selectedColumn);
+    if(f){
+        f->setText(QString(QString::fromStdString(std::to_string(this->selectedNumber))));
+        b->decOccurances();
+    }
 
 }
+
+void MainWindow::initializeGrid()
+{
+    for (int i = 0; i < 10; ++i) {
+        for (int j = 0; j < 10; ++j) {
+            ui->grid->setItem(i, j, new QTableWidgetItem(""));
+        }
+    }
+}
+
+void MainWindow::on_startGameButton_clicked()
+{
+    this->initializeGrid();
+    this->selectedRow = -1;
+    this->selectedColumn = -1;
+    ui->grid->clearFocus();
+    ui->grid->clearSelection();
+}
+
