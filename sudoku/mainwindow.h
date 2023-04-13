@@ -3,7 +3,8 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-
+#include <QPushButton>
+#include "numberbutton.h"
 
 
 QT_BEGIN_NAMESPACE
@@ -18,18 +19,24 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+    void createButtons();
 
 private slots:
+    void selectNumber();
+//    void unselect();
+
+    void on_grid_cellClicked(int row, int column);
+
     void on_startGameButton_clicked();
-
-    void on_button1_clicked();
-
-    void on_button2_clicked();
-
-    void on_button3_clicked();
 
 private:
     Ui::MainWindow *ui;
+    std::vector<NumberButton*> numberButtons;
+    int selectedNumber;
+    int selectedRow, selectedColumn;
+    bool compare(int row, int column) const;
+    void insertAction();
+    void initializeGrid();
 };
 
 #endif // MAINWINDOW_H
