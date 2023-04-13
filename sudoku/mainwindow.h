@@ -23,11 +23,17 @@ public:
 
 private slots:
     void selectNumber();
+//    void unselect();
+
+    void on_grid_cellClicked(int row, int column);
 
 private:
     Ui::MainWindow *ui;
     std::vector<NumberButton*> numberButtons;
     int selectedNumber;
+    int selectedRow, selectedColumn;
+    bool compare(int row, int column) const;
+    void insertAction();
 };
 
 #endif // MAINWINDOW_H
