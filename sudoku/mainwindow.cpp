@@ -104,7 +104,9 @@ void MainWindow::initializeGrid()
 {
     for (int i = 0; i < 10; ++i) {
         for (int j = 0; j < 10; ++j) {
-            ui->grid->setItem(i, j, new QTableWidgetItem(""));
+            QTableWidgetItem *item  = new QTableWidgetItem("");
+            item->setTextAlignment(Qt::AlignCenter);
+            ui->grid->setItem(i, j, item);
         }
     }
 }
