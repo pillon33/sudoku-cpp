@@ -23,10 +23,7 @@ public:
 
 private slots:
     void selectNumber();
-//    void unselect();
-
     void on_grid_cellClicked(int row, int column);
-
     void on_startGameButton_clicked();
 
 private:
@@ -37,6 +34,7 @@ private:
     bool compare(int row, int column) const;
     void insertAction();
     void initializeGrid();
+    void resetButtons();
 };
 
 #endif // MAINWINDOW_H

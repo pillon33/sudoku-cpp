@@ -6,20 +6,24 @@ int NumberButton::getOccurances() const
     return occurances;
 }
 
+
 void NumberButton::setOccurances(int newOccurances)
 {
     occurances = newOccurances;
 }
+
 
 void NumberButton::incOccurances()
 {
     occurances++;
 }
 
+
 void NumberButton::decOccurances()
 {
     occurances--;
 }
+
 
 NumberButton::NumberButton(int n, int oc)
 {

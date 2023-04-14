@@ -15,10 +15,12 @@ MainWindow::MainWindow(QWidget *parent)
     this->selectedColumn = -1;
 }
 
+
 MainWindow::~MainWindow()
 {
     delete ui;
 }
+
 
 void MainWindow::createButtons(){
     for (int i = 1; i < 10; ++i) {
@@ -29,6 +31,7 @@ void MainWindow::createButtons(){
         this->numberButtons.push_back(b);
     }
 }
+
 
 void MainWindow::selectNumber(){
     //retrive information about sender
@@ -48,10 +51,8 @@ void MainWindow::selectNumber(){
     }else{
         this->selectedNumber = 0;
     }
-//    ui->selectedNumberLabel->setText(
-//        QString("Selected number: %1").arg(this->selectedNumber)
-//    );
 }
+
 
 /**
  * @brief MainWindow::compare - function compares given coordinates with selected field.
@@ -62,6 +63,7 @@ void MainWindow::selectNumber(){
 bool MainWindow::compare(int row, int column) const{
     return ( (this->selectedRow == row) && (this->selectedColumn == column) );
 }
+
 
 void MainWindow::on_grid_cellClicked(int row, int column)
 {
@@ -80,6 +82,7 @@ void MainWindow::on_grid_cellClicked(int row, int column)
     }
 }
 
+
 void MainWindow::insertAction(){
     //Check if any number selected
     if(this->selectedNumber == 0){
@@ -97,8 +100,8 @@ void MainWindow::insertAction(){
         f->setText(QString(QString::fromStdString(std::to_string(this->selectedNumber))));
         b->decOccurances();
     }
-
 }
+
 
 void MainWindow::initializeGrid()
 {
@@ -111,9 +114,21 @@ void MainWindow::initializeGrid()
     }
 }
 
+
+void MainWindow::resetButtons()
+{
+    for (int i = 0; i < 9; ++i) {
+        NumberButton *b = this->numberButtons.at(i);
+        b->setOccurances(9);
+        b->setChecked(false);
+    }
+}
+
+
 void MainWindow::on_startGameButton_clicked()
 {
     this->initializeGrid();
+    this->resetButtons();
     this->selectedRow = -1;
     this->selectedColumn = -1;
     ui->grid->clearFocus();
