@@ -129,8 +129,11 @@ void MainWindow::on_startGameButton_clicked()
 {
     this->initializeGrid();
     this->resetButtons();
+
+    this->selectedNumber = 0;
     this->selectedRow = -1;
     this->selectedColumn = -1;
+
     ui->grid->clearFocus();
     ui->grid->clearSelection();
 }
