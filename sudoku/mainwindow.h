@@ -32,11 +32,14 @@ private:
     std::vector<NumberButton*> numberButtons;
     int selectedNumber;
     int selectedRow, selectedColumn;
+    QBrush background = QBrush(QColor(229, 229, 229));
+    QBrush badAnswer = QBrush(QColor(255, 0, 0));
     SudokuController *sudokuController;
     bool compare(int row, int column) const;
     void insertAction();
     void initializeGrid();
     void resetButtons();
+    void refreshUI();
 };
 
 #endif // MAINWINDOW_H

@@ -99,7 +99,14 @@ void MainWindow::insertAction(){
     NumberButton *b = this->numberButtons.at(this->selectedNumber - 1);
     QTableWidgetItem *f =  ui->grid->item(this->selectedRow, this->selectedColumn);
     if(f){
-        f->setText(QString(QString::fromStdString(std::to_string(this->selectedNumber))));
+        this->sudokuController->setValue(this->selectedRow, this->selectedColumn,
+                                         this->selectedNumber);
+        if( !(this->sudokuController->isCorrect()) ){
+            f->setBackground(this->badAnswer);
+        }else{
+            f->setBackground(this->background);
+        }
+        this->refreshUI();
         b->decOccurances();
     }
 }
@@ -131,6 +138,23 @@ void MainWindow::resetButtons()
         NumberButton *b = this->numberButtons.at(i);
         b->setOccurances(9);
         b->setChecked(false);
+    }
+}
+
+void MainWindow::refreshUI()
+{
+    for (int i = 0; i < 9; i++) {
+        for (int j = 0; j < 9; j++) {
+            int number = this->sudokuController->getValue(i, j);
+
+            QString val = QString(QString::fromStdString(std::to_string(number)));
+            if(number == 0){
+                val = QString("");
+            }
+
+            QTableWidgetItem *item  = ui->grid->item(i, j);
+            item->setText(val);
+        }
     }
 }
 
