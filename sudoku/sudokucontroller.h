@@ -25,6 +25,9 @@ private:
         {0, 0, 0, 0, 0, 0, 0, 0, 0},
         {0, 0, 0, 0, 0, 0, 0, 0, 0}
     };
+    int firstMatrix[9] = {1, 1, 1, 1, 1, 1, 1, 1, 1};
+    int secondMatrix[9] = {1, 1, 1, 1, 1, 1, 1, 1, 1};
+    int thirdMatrix[9] = {1, 1, 1, 1, 1, 1, 1, 1, 1};
 };
 
 #endif // SUDOKUCONTROLLER_H

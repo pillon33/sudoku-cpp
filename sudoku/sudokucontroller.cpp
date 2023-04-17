@@ -16,17 +16,45 @@ void SudokuController::generatePuzzle(int numberOfClues)
         return;
     }
 
+    int randomNumber = 0;
+
+    for (int i = 0; i < 10; ++i) {
+        this->firstMatrix[i] = 1;
+        this->secondMatrix[i] = 1;
+        this->thirdMatrix[i] = 1;
+    }
+
     //randomly fill squares on diagonal
     for (int i = 0; i < 3; i++) {
         for (int j = 0; j < 3; j++) {
+            randomNumber = rand() % 9 + 1;
+
+            while(this->firstMatrix[randomNumber - 1] == 0){
+                randomNumber = rand() % 9 + 1;
+            }
+
+            this->firstMatrix[randomNumber - 1] = 0;
+
             //left top square
-            this->grid[i][j] = rand() % 9 + 1;
+            this->grid[i][j] = randomNumber;
+
+            while(this->secondMatrix[randomNumber - 1] == 0){
+                randomNumber = rand() % 9 + 1;
+            }
+
+            this->secondMatrix[randomNumber - 1] = 0;
 
             //middle square
-            this->grid[i + 3][j + 3] = rand() % 9 + 1;
+            this->grid[i + 3][j + 3] = randomNumber;
+
+            while(this->thirdMatrix[randomNumber - 1] == 0){
+                randomNumber = rand() % 9 + 1;
+            }
+
+            this->thirdMatrix[randomNumber - 1] = 0;
 
             //right bottom square
-            this->grid[i + 6][j + 6] = rand() % 9 + 1;
+            this->grid[i + 6][j + 6] = randomNumber;
         }
     }
 }
