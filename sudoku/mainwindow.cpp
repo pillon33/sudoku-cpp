@@ -8,6 +8,8 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    this->sudokuController = new SudokuController();
+    this->sudokuController->resetGrid();
     this->createButtons();
     this->initializeGrid();
     this->selectedNumber = 0;
@@ -107,8 +109,16 @@ void MainWindow::initializeGrid()
 {
     for (int i = 0; i < 10; ++i) {
         for (int j = 0; j < 10; ++j) {
+            int number = this->sudokuController->getValue(i, j);
+
+            QString val = QString(QString::fromStdString(std::to_string(number)));
+            if(number == 0){
+                val = QString("");
+            }
+
             QTableWidgetItem *item  = new QTableWidgetItem("");
             item->setTextAlignment(Qt::AlignCenter);
+            item->setText(val);
             ui->grid->setItem(i, j, item);
         }
     }
@@ -127,6 +137,9 @@ void MainWindow::resetButtons()
 
 void MainWindow::on_startGameButton_clicked()
 {
+    this->sudokuController->resetGrid();
+    this->sudokuController->generatePuzzle(40);
+
     this->initializeGrid();
     this->resetButtons();
 

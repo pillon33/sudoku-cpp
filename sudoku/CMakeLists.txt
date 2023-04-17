@@ -19,6 +19,8 @@ set(PROJECT_SOURCES
         mainwindow.ui
         numberbutton.h
         numberbutton.cpp
+        sudokucontroller.h
+        sudokucontroller.cpp
 )
 
 set(ASSETS

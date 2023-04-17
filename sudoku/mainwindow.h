@@ -5,6 +5,7 @@
 #include <QMainWindow>
 #include <QPushButton>
 #include "numberbutton.h"
+#include "sudokucontroller.h"
 
 
 QT_BEGIN_NAMESPACE
@@ -31,6 +32,7 @@ private:
     std::vector<NumberButton*> numberButtons;
     int selectedNumber;
     int selectedRow, selectedColumn;
+    SudokuController *sudokuController;
     bool compare(int row, int column) const;
     void insertAction();
     void initializeGrid();
