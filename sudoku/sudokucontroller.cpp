@@ -150,3 +150,67 @@ bool SudokuController::isCorrect()
     return true;
 }
 
+/**
+ * @brief SudokuController::optimisedIsCorrect checks if last change is correct
+ * @param row
+ * @param col
+ * @return
+ * Checks only given row, column and appropriate sub-square
+ */
+bool SudokuController::optimisedIsCorrect(int posRow, int posCol)
+{
+    //finds coordinates of sub-square
+    int mainRow = posRow/3;
+    int mainCol = posCol/3;
+
+    int number = this->grid[posRow][posCol];
+    if(!number){
+        return true;
+    }
+
+    int numbers[10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    //iterate through all fields in sub-square
+    for (int row = 0; row < 3; row++) {
+        for (int col = 0; col < 3; col++) {
+            int number = this->grid[row + mainRow*3][col + mainCol*3];
+            numbers[number]++;
+        }
+    }
+
+    if (numbers[number] > 1){
+        return false;
+    }
+
+    //reset counter table
+    for (int i = 0; i < 10; i++) {
+        numbers[i] = 0;
+    }
+
+    //checks given row
+    for (int col = 0; col < 9; col++) {
+        int number = this->grid[posRow][col];
+        numbers[number]++;
+    }
+
+    if (numbers[number] > 1){
+        return false;
+    }
+
+    //reset counter table
+    for (int i = 0; i < 10; i++) {
+        numbers[i] = 0;
+    }
+
+    //checks given column
+    for (int row = 0; row < 9; row++) {
+        int number = this->grid[row][posCol];
+        numbers[number]++;
+    }
+
+    if (numbers[number] > 1){
+        return false;
+    }
+
+    return true;
+}
+

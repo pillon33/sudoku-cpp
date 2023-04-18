@@ -21,6 +21,8 @@ set(PROJECT_SOURCES
         numberbutton.cpp
         sudokucontroller.h
         sudokucontroller.cpp
+        backtrackingsolver.h
+        backtrackingsolver.cpp
 )
 
 set(ASSETS

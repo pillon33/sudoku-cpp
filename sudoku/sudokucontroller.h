@@ -14,6 +14,7 @@ public:
     int getValue(int, int);
     void setValue(int, int, int);
     bool isCorrect();
+    bool optimisedIsCorrect(int, int);
 
 private:
     int grid[9][9] = {

@@ -101,7 +101,7 @@ void MainWindow::insertAction(){
     if(f){
         this->sudokuController->setValue(this->selectedRow, this->selectedColumn,
                                          this->selectedNumber);
-        if( !(this->sudokuController->isCorrect()) ){
+        if( !(this->sudokuController->optimisedIsCorrect(this->selectedRow, this->selectedColumn)) ){
             f->setBackground(this->badAnswer);
         }else{
             f->setBackground(this->background);
