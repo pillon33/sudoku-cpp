@@ -7,6 +7,7 @@
 SudokuController::SudokuController()
 {
     srand(time(NULL));
+    this->solver = new BacktrackingSolver();
 }
 
 /**
@@ -22,7 +23,7 @@ void SudokuController::generatePuzzle(int numberOfClues)
 
     int randomNumber = 0;
 
-    for (int i = 0; i < 10; ++i) {
+    for (int i = 0; i < 9; i++) {
         this->firstMatrix[i] = 1;
         this->secondMatrix[i] = 1;
         this->thirdMatrix[i] = 1;
@@ -40,7 +41,9 @@ void SudokuController::generatePuzzle(int numberOfClues)
             this->firstMatrix[randomNumber - 1] = 0;
 
             //left top square
-            this->grid[i][j] = randomNumber;
+            setFieldValue(i, j, randomNumber);
+
+            randomNumber = rand() % 9 + 1;
 
             while(this->secondMatrix[randomNumber - 1] == 0){
                 randomNumber = rand() % 9 + 1;
@@ -49,7 +52,9 @@ void SudokuController::generatePuzzle(int numberOfClues)
             this->secondMatrix[randomNumber - 1] = 0;
 
             //middle square
-            this->grid[i + 3][j + 3] = randomNumber;
+            setFieldValue(i + 3, j + 3, randomNumber);
+
+            randomNumber = rand() % 9 + 1;
 
             while(this->thirdMatrix[randomNumber - 1] == 0){
                 randomNumber = rand() % 9 + 1;
@@ -58,8 +63,12 @@ void SudokuController::generatePuzzle(int numberOfClues)
             this->thirdMatrix[randomNumber - 1] = 0;
 
             //right bottom square
-            this->grid[i + 6][j + 6] = randomNumber;
+            setFieldValue(i + 6, j + 6, randomNumber);
         }
+    }
+
+    if(this->solver){
+        this->solver->setBoard(grid);
     }
 }
 
@@ -68,9 +77,9 @@ void SudokuController::generatePuzzle(int numberOfClues)
  */
 void SudokuController::resetGrid()
 {
-    for (int i = 0; i < 10; ++i) {
-        for (int j = 0; j < 10; ++j) {
-            this->grid[i][j] = 0;
+    for (int i = 0; i < 9; i++) {
+        for (int j = 0; j < 9; j++) {
+            setFieldValue(i, j, 0);
         }
     }
 }
@@ -87,7 +96,7 @@ int SudokuController::getValue(int row, int col)
         return 0;
     }
 
-    return this->grid[row][col];
+    return getFieldValue(row, col);
 }
 
 void SudokuController::setValue(int row, int col, int value)
@@ -96,7 +105,7 @@ void SudokuController::setValue(int row, int col, int value)
         return;
     }
 
-    this->grid[row][col] = value;
+    setFieldValue(row, col, value);
 }
 
 /**
@@ -113,7 +122,7 @@ bool SudokuController::isCorrect()
             //iterate through all fields in small square
             for (int row = 0; row < 3; row++) {
                 for (int col = 0; col < 3; col++) {
-                    int number = this->grid[row + mainRow*3][col + mainCol*3];
+                    int number = getFieldValue(row + mainRow*3, col + mainCol*3);
                     numbers[number]++;
                     if( (number) && (numbers[number] > 1) ){
                         return false;
@@ -127,7 +136,7 @@ bool SudokuController::isCorrect()
     for (int row = 0; row < 9; row++) {
         int numbers[10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
         for (int col = 0; col < 9; col++) {
-            int number = this->grid[row][col];
+            int number = getFieldValue(row, col);
             numbers[number]++;
             if( (number) && (numbers[number] > 1) ){
                 return false;
@@ -139,7 +148,7 @@ bool SudokuController::isCorrect()
     for (int col = 0; col < 9; col++) {
         int numbers[10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
         for (int row = 0; row < 9; row++) {
-            int number = this->grid[row][col];
+            int number = getFieldValue(row, col);
             numbers[number]++;
             if( (number) && (numbers[number] > 1) ){
                 return false;
@@ -163,7 +172,7 @@ bool SudokuController::optimisedIsCorrect(int posRow, int posCol)
     int mainRow = posRow/3;
     int mainCol = posCol/3;
 
-    int number = this->grid[posRow][posCol];
+    int number = getFieldValue(posRow, posCol);
     if(!number){
         return true;
     }
@@ -172,7 +181,7 @@ bool SudokuController::optimisedIsCorrect(int posRow, int posCol)
     //iterate through all fields in sub-square
     for (int row = 0; row < 3; row++) {
         for (int col = 0; col < 3; col++) {
-            int number = this->grid[row + mainRow*3][col + mainCol*3];
+            int number = getFieldValue(row + mainRow*3, col + mainCol*3);
             numbers[number]++;
         }
     }
@@ -188,7 +197,7 @@ bool SudokuController::optimisedIsCorrect(int posRow, int posCol)
 
     //checks given row
     for (int col = 0; col < 9; col++) {
-        int number = this->grid[posRow][col];
+        int number = getFieldValue(posRow, col);
         numbers[number]++;
     }
 
@@ -203,7 +212,7 @@ bool SudokuController::optimisedIsCorrect(int posRow, int posCol)
 
     //checks given column
     for (int row = 0; row < 9; row++) {
-        int number = this->grid[row][posCol];
+        int number = getFieldValue(row, posCol);
         numbers[number]++;
     }
 
@@ -212,5 +221,33 @@ bool SudokuController::optimisedIsCorrect(int posRow, int posCol)
     }
 
     return true;
+}
+
+int SudokuController::getIdx(int row, int col)
+{
+    return 9*row + col;
+}
+
+int SudokuController::getFieldValue(int row, int col)
+{
+    return this->grid[getIdx(row, col)];
+}
+
+void SudokuController::setFieldValue(int row, int col, int value)
+{
+    this->grid[getIdx(row, col)] = value;
+}
+
+/**
+ * @brief SudokuController::getSolution copies solution from solver to grid table
+ */
+void SudokuController::getSolution()
+{
+    for (int row = 0; row < 9; row++) {
+        for (int col = 0; col < 9; col++) {
+            int number = this->solver->getFieldValue(row, col);
+            setFieldValue(row, col, number);
+        }
+    }
 }
 
