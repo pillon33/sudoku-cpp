@@ -5,6 +5,7 @@
 #include <QMainWindow>
 #include <QPushButton>
 #include "numberbutton.h"
+#include "sudokucontroller.h"
 
 
 QT_BEGIN_NAMESPACE
@@ -23,10 +24,7 @@ public:
 
 private slots:
     void selectNumber();
-//    void unselect();
-
     void on_grid_cellClicked(int row, int column);
-
     void on_startGameButton_clicked();
 
 private:
@@ -34,9 +32,14 @@ private:
     std::vector<NumberButton*> numberButtons;
     int selectedNumber;
     int selectedRow, selectedColumn;
+    QBrush background = QBrush(QColor(229, 229, 229));
+    QBrush badAnswer = QBrush(QColor(255, 0, 0));
+    SudokuController *sudokuController;
     bool compare(int row, int column) const;
     void insertAction();
     void initializeGrid();
+    void resetButtons();
+    void refreshUI();
 };
 
 #endif // MAINWINDOW_H
