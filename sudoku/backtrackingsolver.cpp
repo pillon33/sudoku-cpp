@@ -251,3 +251,88 @@ void BacktrackingSolver::delay()
     while (QTime::currentTime() < dieTime)
         QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
 }
+
+/**
+ * @brief BacktrackingSolver::isPuzzle checks if given puzzle has only one solution
+ * @return
+ */
+bool BacktrackingSolver::isPuzzle(int *puzzle)
+{
+    int numberOfTries = 0;
+    int row = 0;
+    int col = 0;
+    int idx = 0;
+    int startidx = 0;
+    int numberOfSolutions = 0;
+    std::vector<int> prevIdx;
+
+    this->setBoard(puzzle);
+
+    while(this->board[idx]){
+        idx++;
+        if(idx > 80){
+            return false;
+        }
+    }
+    startidx = idx;
+
+    while(idx < 81){
+        //        numberOfTries++;
+        //        if(numberOfTries >= 1){
+        //            this->debugSolution();
+        //            numberOfTries = 0;
+        //            this->delay();
+        //        }
+
+        int number = this->board[idx];
+
+        //if this field is a clue
+        if (number){
+            idx++;
+            continue;
+        }
+
+        this->solution[idx]++;
+
+        //no numbers match in this position
+        if(this->solution[idx] > 9){
+            //if it's first position then it can't find solution
+            if(idx == startidx){
+                break;
+            }
+
+            //reset this position
+            this->solution[idx] = 0;
+
+            //go to previous position
+            idx = prevIdx.back();
+
+            //remove this idx from history
+            prevIdx.pop_back();
+
+            if(idx >= 0){
+                continue;
+            }
+
+            //couldn't find any solution
+            break;
+        }
+
+        if(!this->isCorrect()){
+            continue;
+        }
+
+        prevIdx.push_back(idx);
+        idx++;
+        if(idx > 80){
+            numberOfSolutions++;
+            idx--;
+            if (numberOfSolutions > 1){
+                return true;
+            }
+            continue;
+        }
+    }
+
+    return numberOfSolutions == 1;
+}
