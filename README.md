@@ -17,6 +17,8 @@ Mask generator creates random order to go through the grid, removes number from 
 # Mistake checking
 There are two algorithm for mistake checking, the first one iterates through whole grid and checks if there are any mistakes. The second one is optimised to check if last change was a mistake or not. 
 
+![alt text](https://github.com/pillon33/sudoku-cpp/blob/main/example_mistakes.png?raw=true)
+
 # TODO
 UI:
   - General layout :heavy_check_mark:
