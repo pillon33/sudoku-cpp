@@ -32,21 +32,3 @@ Mask generator creates random order to go through the grid, removes number from 
 There are two algorithm for mistake checking, the first one iterates through whole grid and checks if there are any mistakes. The second one is optimised to check if last change was a mistake or not. 
 
 ![alt text](https://github.com/pillon33/sudoku-cpp/blob/main/example_mistakes.png?raw=true)
-
-# TODO
-UI:
-  - General layout :heavy_check_mark:
-  - 9x9 Board :x:
-  - Marking corresponding numbers on board :x:
-
-Game logic:
-  - Generate puzzle :x:
-  - Check for mistakes in square :x:
-  - Check for mistakes in row/column :x:
-  - Check if solved :x:
-  - Timer :x:
-  - Statistics :x:
-  
-Game settings:
-  - Show / hide mistakes :x:
-  - Difficulty level :x:
