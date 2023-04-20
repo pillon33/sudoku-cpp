@@ -18,8 +18,9 @@ Transformations done to the pattern are:
  - randomly rearanging groups of columns within themselves,
  - randomly rearanging rows of sub-squares,
  - randomly rearanging columns of sub-squares.
- - 
+
  Default pattern:
+ 
  ![alt text](https://github.com/pillon33/sudoku-cpp/blob/main/default_pattern.png?raw=true)
 
 # Mask generating
