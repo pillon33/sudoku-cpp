@@ -21,13 +21,17 @@ void SudokuController::generatePuzzle(int numbersToRemove)
         return;
     }
 
-    this->fillWithRandomNumbers();
+    //backtracking generator
+//    this->fillWithRandomNumbers();
 
-    if(this->solver){
-        this->solver->setBoard(grid);
-        this->solver->solve();
-        getSolution();
-    }
+//    if(this->solver){
+//        this->solver->setBoard(grid);
+//        this->solver->solve();
+//        getSolution();
+//    }
+
+    //shuffle generator
+    this->shufflePattern();
 
     this->createMask(40, 0);
 }
@@ -334,13 +338,174 @@ void SudokuController::createMask(int numbersToRemove, int trial)
     }
 }
 
-//bool SudokuController::contains(int *tab, int number, int maxPos)
-//{
-//    for(int i = 0; i < maxPos; i++){
-//        if(tab[i] == number){
-//            return true;
-//        }
-//    }
-//    return false;
-//}
+/**
+ * @brief SudokuController::shufflePattern makes random changes to default pattern that don't affect rules of sudoku
+ * in this case each grid is in fact the same grid but it is impossible for user to see that
+ * this method has really low complexity as it doesn't need to use backtracking solver and
+ * it has huge ammount of combinations as results.
+ */
+void SudokuController::shufflePattern()
+{
+    //shuffle digits and replace them in all cells
+    int newDigits[9] = {0, 0, 0, 0, 0, 0, 0, 0, 0};
+    int usedDigits[9] = {0, 0, 0, 0, 0, 0, 0, 0, 0};
+    int randomNumber = rand()%9;
+
+    for (int number = 0; number < 9; number++){
+        while(usedDigits[randomNumber]){
+            randomNumber = rand()%9;
+        }
+
+        newDigits[number] = randomNumber;
+        usedDigits[randomNumber] = 1;
+    }
+
+    for (int row = 0; row < 9; row++) {
+        for (int col = 0; col < 9; col++) {
+            int number = this->pattern[getIdx(row, col)];
+            setFieldValue(row, col, newDigits[number - 1] + 1);
+        }
+    }
+    /////////////////////////////////////////////////////
+
+
+    //randomly rearange groups of rows (1, 2, 3), (4, 5, 6), (7, 8, 9) within themselves
+    for(int i = 0; i < 3; i++){
+        int firstRandomNumber = rand() % 3;
+        int secondRandomNumber = rand() % 3;
+
+        while(firstRandomNumber == secondRandomNumber){
+            firstRandomNumber = rand() % 3;
+        }
+
+        //rearanges rows (1, 2, 3)
+        this->swapRows(firstRandomNumber, secondRandomNumber);
+
+        firstRandomNumber = rand() % 3;
+        secondRandomNumber = rand() % 3;
+
+        while(firstRandomNumber == secondRandomNumber){
+            firstRandomNumber = rand() % 3;
+        }
+
+        //rearanges rows (4, 5, 6)
+        this->swapRows(firstRandomNumber + 3, secondRandomNumber + 3);
+
+        firstRandomNumber = rand() % 3;
+        secondRandomNumber = rand() % 3;
+
+        while(firstRandomNumber == secondRandomNumber){
+            firstRandomNumber = rand() % 3;
+        }
+
+        //rearanges rows (7, 8, 9)
+        this->swapRows(firstRandomNumber + 6, secondRandomNumber + 6);
+    }
+    //////////////////////////////////////////////////////////////////////////////
+
+
+    //randomly rearange groups of columns (1, 2, 3), (4, 5, 6), (7, 8, 9) within themselves
+    for(int i = 0; i < 3; i++){
+        int firstRandomNumber = rand() % 3;
+        int secondRandomNumber = rand() % 3;
+
+        while(firstRandomNumber == secondRandomNumber){
+            firstRandomNumber = rand() % 3;
+        }
+
+        //rearanges rows (1, 2, 3)
+        this->swapColumns(firstRandomNumber, secondRandomNumber);
+
+        firstRandomNumber = rand() % 3;
+        secondRandomNumber = rand() % 3;
+
+        while(firstRandomNumber == secondRandomNumber){
+            firstRandomNumber = rand() % 3;
+        }
+
+        //rearanges rows (4, 5, 6)
+        this->swapColumns(firstRandomNumber + 3, secondRandomNumber + 3);
+
+        firstRandomNumber = rand() % 3;
+        secondRandomNumber = rand() % 3;
+
+        while(firstRandomNumber == secondRandomNumber){
+            firstRandomNumber = rand() % 3;
+        }
+
+        //rearanges rows (7, 8, 9)
+        this->swapColumns(firstRandomNumber + 6, secondRandomNumber + 6);
+    }
+    /////////////////////////////////////////////////////////////////////////
+
+
+
+    //randomly rearange 3 rows of subsquares
+    for(int i = 0; i < 3; i++){
+        int firstRandomNumber = rand() % 3;
+        int secondRandomNumber = rand() % 3;
+
+        while(firstRandomNumber == secondRandomNumber){
+            firstRandomNumber = rand() % 3;
+        }
+
+        this->swapRows(firstRandomNumber*3, secondRandomNumber*3);
+        this->swapRows(firstRandomNumber*3 + 1, secondRandomNumber*3 + 1);
+        this->swapRows(firstRandomNumber*3 + 2, secondRandomNumber*3 + 2);
+    }
+    /////////////////////////////////////////////////////////////////////////
+
+
+    //randomly rearange 3 columns of subsquares
+    for(int i = 0; i < 3; i++){
+        int firstRandomNumber = rand() % 3;
+        int secondRandomNumber = rand() % 3;
+
+        while(firstRandomNumber == secondRandomNumber){
+            firstRandomNumber = rand() % 3;
+        }
+
+        this->swapColumns(firstRandomNumber*3, secondRandomNumber*3);
+        this->swapColumns(firstRandomNumber*3 + 1, secondRandomNumber*3 + 1);
+        this->swapColumns(firstRandomNumber*3 + 2, secondRandomNumber*3 + 2);
+    }
+}
+
+void SudokuController::swapRows(int first, int second)
+{
+    for (int i = 0; i < 9; i++) {
+        //get idxs
+        int firstIdx = getIdx(first, i);
+        int secondIdx = getIdx(second, i);
+
+        //swap numbers
+        int tmp = this->grid[firstIdx];
+        this->grid[firstIdx] = this->grid[secondIdx];
+        this->grid[secondIdx] = tmp;
+    }
+}
+
+void SudokuController::swapColumns(int first, int second)
+{
+    for (int i = 0; i < 9; i++) {
+        //get idxs
+        int firstIdx = getIdx(i, first);
+        int secondIdx = getIdx(i, second);
+
+        //swap numbers
+        int tmp = this->grid[firstIdx];
+        this->grid[firstIdx] = this->grid[secondIdx];
+        this->grid[secondIdx] = tmp;
+    }
+}
+
+void SudokuController::rotate(int)
+{
+
+}
+
+void SudokuController::mirror(int)
+{
+
+}
 

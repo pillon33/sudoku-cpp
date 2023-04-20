@@ -21,6 +21,7 @@ public:
     void getSolution();
     void fillWithRandomNumbers();
     void createMask(int, int);
+    void shufflePattern();
 
 private:
     //contains current state of the grid
@@ -34,6 +35,18 @@ private:
         0, 0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0, 0
+    };
+    //contains default grid pattern to be randomized
+    int pattern[81] = {
+        1, 2, 3, 4, 5, 6, 7, 8, 9,
+        4, 5, 6, 7, 8, 9, 1, 2, 3,
+        7, 8, 9, 1, 2, 3, 4, 5, 6,
+        2, 3, 1, 5, 6, 4, 8, 9, 7,
+        5, 6, 4, 8, 9, 7, 2, 3, 1,
+        8, 9, 7, 2, 3, 1, 5, 6, 4,
+        3, 1, 2, 6, 4, 5, 9, 7, 8,
+        6, 4, 5, 9, 7, 8, 3, 1, 2,
+        9, 7, 8, 3, 1, 2, 6, 4, 5
     };
     //contains solution (whole board filled with numbers)
     int solution[81] = {
@@ -63,6 +76,10 @@ private:
     int secondMatrix[9] = {1, 1, 1, 1, 1, 1, 1, 1, 1};
     int thirdMatrix[9] = {1, 1, 1, 1, 1, 1, 1, 1, 1};
     BacktrackingSolver *solver;
+    void swapRows(int, int);
+    void swapColumns(int, int);
+    void rotate(int);
+    void mirror(int);
 //    bool contains(int*, int, int = 81);
 };
 
