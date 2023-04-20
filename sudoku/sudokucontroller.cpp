@@ -69,6 +69,8 @@ void SudokuController::generatePuzzle(int numberOfClues)
 
     if(this->solver){
         this->solver->setBoard(grid);
+        this->solver->solve();
+        getSolution();
     }
 }
 
