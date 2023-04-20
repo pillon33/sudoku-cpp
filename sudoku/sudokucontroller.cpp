@@ -14,64 +14,22 @@ SudokuController::SudokuController()
  * @brief SudokuController::generatePuzzle generates random puzzle
  * @param numberOfClues - number of visible fields (>17)
  */
-void SudokuController::generatePuzzle(int numberOfClues)
+void SudokuController::generatePuzzle(int numbersToRemove)
 {
     //Correct puzzle can't have less than 17 clues (visible numbers at start)
-    if (numberOfClues < 17){
+    if (numbersToRemove + 17 > 81){
         return;
     }
 
-    int randomNumber = 0;
-
-    for (int i = 0; i < 9; i++) {
-        this->firstMatrix[i] = 1;
-        this->secondMatrix[i] = 1;
-        this->thirdMatrix[i] = 1;
-    }
-
-    //randomly fill squares on diagonal
-    for (int i = 0; i < 3; i++) {
-        for (int j = 0; j < 3; j++) {
-            randomNumber = rand() % 9 + 1;
-
-            while(this->firstMatrix[randomNumber - 1] == 0){
-                randomNumber = rand() % 9 + 1;
-            }
-
-            this->firstMatrix[randomNumber - 1] = 0;
-
-            //left top square
-            setFieldValue(i, j, randomNumber);
-
-            randomNumber = rand() % 9 + 1;
-
-            while(this->secondMatrix[randomNumber - 1] == 0){
-                randomNumber = rand() % 9 + 1;
-            }
-
-            this->secondMatrix[randomNumber - 1] = 0;
-
-            //middle square
-            setFieldValue(i + 3, j + 3, randomNumber);
-
-            randomNumber = rand() % 9 + 1;
-
-            while(this->thirdMatrix[randomNumber - 1] == 0){
-                randomNumber = rand() % 9 + 1;
-            }
-
-            this->thirdMatrix[randomNumber - 1] = 0;
-
-            //right bottom square
-            setFieldValue(i + 6, j + 6, randomNumber);
-        }
-    }
+    this->fillWithRandomNumbers();
 
     if(this->solver){
         this->solver->setBoard(grid);
         this->solver->solve();
         getSolution();
     }
+
+    this->createMask(40, 0);
 }
 
 /**
@@ -238,6 +196,7 @@ int SudokuController::getFieldValue(int row, int col)
 void SudokuController::setFieldValue(int row, int col, int value)
 {
     this->grid[getIdx(row, col)] = value;
+    this->solution[getIdx(row, col)] = value;
 }
 
 /**
@@ -252,4 +211,136 @@ void SudokuController::getSolution()
         }
     }
 }
+
+void SudokuController::fillWithRandomNumbers()
+{
+    int randomNumber = 0;
+
+    for (int i = 0; i < 9; i++) {
+        this->firstMatrix[i] = 1;
+        this->secondMatrix[i] = 1;
+        this->thirdMatrix[i] = 1;
+    }
+
+    //randomly fill squares on diagonal
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 3; j++) {
+            randomNumber = rand() % 9 + 1;
+
+            while(this->firstMatrix[randomNumber - 1] == 0){
+                randomNumber = rand() % 9 + 1;
+            }
+
+            this->firstMatrix[randomNumber - 1] = 0;
+
+            //left top square
+            setFieldValue(i, j, randomNumber);
+
+            randomNumber = rand() % 9 + 1;
+
+            while(this->secondMatrix[randomNumber - 1] == 0){
+                randomNumber = rand() % 9 + 1;
+            }
+
+            this->secondMatrix[randomNumber - 1] = 0;
+
+            //middle square
+            setFieldValue(i + 3, j + 3, randomNumber);
+
+            randomNumber = rand() % 9 + 1;
+
+            while(this->thirdMatrix[randomNumber - 1] == 0){
+                randomNumber = rand() % 9 + 1;
+            }
+
+            this->thirdMatrix[randomNumber - 1] = 0;
+
+            //right bottom square
+            setFieldValue(i + 6, j + 6, randomNumber);
+        }
+    }
+}
+
+void SudokuController::createMask(int numbersToRemove, int trial)
+{
+    int idxs[81] = {
+        0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0
+    };
+
+    int usedIdxs[81] = {
+        1, 1, 1, 1, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 1, 1, 1
+    };
+
+    int randomNumber = 0;
+
+    int removedNumbers = 0;
+
+    //creates random order to iterate through matrix
+    for(int i = 0; i < 81; i++){
+        randomNumber = rand()%81;
+
+        //Check if idx wasn't used
+        while(!usedIdxs[randomNumber]){
+            randomNumber = rand()%81;
+        }
+
+        //add idx to random order
+        idxs[i] = randomNumber;
+
+        //mark idx as used
+        usedIdxs[randomNumber] = 0;
+    }
+
+    //remove numbers from random positions
+    for(int i = 0; i < 81; i++){
+        //get random idx
+        int idx = idxs[i];
+
+        //remove number
+        this->grid[idx] = 0;
+
+        //check if has only one solution
+        if(this->solver->isPuzzle(this->grid)){
+            removedNumbers++;
+            this->mask[idx] = 0;
+            if(removedNumbers == numbersToRemove){
+                return;
+            }
+        }else{
+            this->grid[idx] = this->solution[idx];
+        }
+    }
+
+    if(numbersToRemove - removedNumbers > 10){
+        if(trial++ < 100){
+            this->createMask(numbersToRemove, trial);
+        }
+    }
+}
+
+//bool SudokuController::contains(int *tab, int number, int maxPos)
+//{
+//    for(int i = 0; i < maxPos; i++){
+//        if(tab[i] == number){
+//            return true;
+//        }
+//    }
+//    return false;
+//}
 

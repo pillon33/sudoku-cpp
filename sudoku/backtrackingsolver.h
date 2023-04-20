@@ -19,6 +19,7 @@ public:
     bool optimisedIsCorrect(int, int);
     void debugSolution();
     void delay();
+    bool isPuzzle(int*);
 private:
     int board[81] = {
         0, 0, 0, 0, 0, 0, 0, 0, 0,
