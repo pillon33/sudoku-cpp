@@ -25,13 +25,6 @@ set(PROJECT_SOURCES
         backtrackingsolver.cpp
 )
 
-set(ASSETS
-    assets/back-arrow-icon.svg
-)
-
-file(COPY assets DESTINATION ${CMAKE_BINARY_DIR})
-
-
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(sudoku
         MANUAL_FINALIZATION
